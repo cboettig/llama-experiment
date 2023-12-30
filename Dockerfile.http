@@ -1,0 +1,14 @@
+FROM nvidia/cuda:12.3.1-devel-ubuntu22.04
+RUN apt-get update && apt-get -y install curl
+RUN curl -L https://github.com/Mozilla-Ocho/llamafile/releases/download/0.4.1/llamafile-server-0.4.1 >llamafile
+RUN chmod +x llamafile
+RUN curl -L https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.1-GGUF/resolve/main/mistral-7b-instruct-v0.1.Q4_K_M.gguf >mistral.gguf
+
+EXPOSE 8080
+CMD ./llamafile -ngl 35 -m mistral.gguf
+
+## thelio setting
+## docker build -f Dockerfile.http -t llamafile .
+## docker run --gpus=all --rm -ti --network="host" llamafile
+
+
